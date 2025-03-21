@@ -1,4 +1,4 @@
-name: Build
+name: SonarQube-Cloud
 on:
   push:
     branches:
