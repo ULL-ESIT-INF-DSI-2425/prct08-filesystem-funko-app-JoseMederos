@@ -1,5 +1,8 @@
 import chalk from 'chalk';
 
+/**
+ * Enum con los typos de Funkos
+ */
 export enum FunkoType {
   POP = "Pop!",
   POP_RIDES = "Pop! Rides",
@@ -7,6 +10,9 @@ export enum FunkoType {
   VYNIL_GOLD = "Vynil Gold"
 }
 
+/**
+ * Enum con los generos de Funkos
+ */
 export enum FunkoGenre {
   AMT = "Animación, Películas y TV",
   VIDEOGAMES = "Videojuegos",
@@ -16,6 +22,9 @@ export enum FunkoGenre {
   OTHER = "Otros"
 }
 
+/**
+ * Interface especificando los datos necesarios de un Funko.
+ */
 export interface Funko {
   id: string;
   name: string;
@@ -28,6 +37,9 @@ export interface Funko {
   market_value: number;
 }
 
+/**
+ * Clase FunkoModel que implementa la interface Funko.
+ */
 export class FunkoModel implements Funko {
   private static nextId = 1;
   id: string;
@@ -45,10 +57,18 @@ export class FunkoModel implements Funko {
     this.id = (FunkoModel.nextId++).toString();
   }
 
+  /**
+   * getter del market_value
+   * @returns market_value
+   */
   getMarketValue(): number | undefined {
     return this.market_value;
   }
 
+  /**
+   * Setter del market_value
+   * @param value - valor a asignar
+   */
   setMarketValue(value: number) {
     if (value <= 0) {
       console.log(chalk.red("Market value must be a positive number."));
@@ -56,6 +76,10 @@ export class FunkoModel implements Funko {
     this.market_value = value;
   }
 
+  /**
+   * Metodo para pasar un objeto FunkoModel a JSON
+   * @returns objeto JSON
+   */
   toJSON(): object {
     return {
       id: this.id,
@@ -70,6 +94,11 @@ export class FunkoModel implements Funko {
     };
   }
 
+  /**
+   * Metodo para obtener los datos de un Funko a partir del formato JSON
+   * @param data - datos del Funko
+   * @returns objeto FunkoModel
+   */
   static fromJSON(data: Partial<FunkoModel>): FunkoModel {
     return new FunkoModel(
       data.name!,

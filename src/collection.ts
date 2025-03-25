@@ -12,6 +12,9 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
+/**
+ * Clase Collection donde se almacenan los funkos
+ */
 export class Collection {
   private funkos: FunkoModel[] = [];
 
@@ -19,16 +22,31 @@ export class Collection {
     this.funkos = initialFunkos || [];
   }
 
+  /**
+   * Getter de siguiente ID a asignar.
+   * @returns siguiete ID
+   */
   getNextId(): number {
     if (this.funkos.length === 0) return 1;
     const maxId = Math.max(...this.funkos.map((f) => parseInt(f.id, 10)));
     return maxId + 1;
   }
 
+  /**
+   * Getter de un Funko por su ID
+   * @param id - id del funko a buscar.
+   * @returns objeto FunkoModel
+   */
   getFunkoById(id: string): FunkoModel | undefined {
     return this.funkos.find((f) => f.id === id);
   }
 
+  /**
+   * Metodo para añadir un funko a la coleccion
+   * @param funko - funko a añadir 
+   * @param preserveId - si se utiliza un id dado por el usuario
+   * @returns bool indicando el estado de la operacion
+   */
   addFunko(funko: FunkoModel, preserveId = false): boolean {
     if (!preserveId) {
       funko.id = this.getNextId().toString();
@@ -41,6 +59,12 @@ export class Collection {
     return true;
   }
 
+  /**
+   * Metodo para actualizar un Funko en la coleccion
+   * @param id - id del Funko a actualizar
+   * @param updatedData - nuevos datos
+   * @returns bool indicando el estado de la operacion
+   */
   updateFunko(
     id: string,
     updatedData: Partial<Omit<FunkoModel, "id">>,
@@ -63,7 +87,12 @@ export class Collection {
 
     return true;
   }
-
+  /**
+   * Metodo para borrar un Funko de la coleccion
+   * @param id - id del funko a borrar
+   * @param user - usuario a quien pertenece el funko
+   * @returns bool indicando el estado de la operacion
+   */
   removeFunko(id: string, user: User): boolean {
     const funkoIndex = this.funkos.findIndex((f) => f.id === id);
     if (funkoIndex === -1) {
@@ -84,6 +113,9 @@ export class Collection {
     }
   }
 
+  /**
+   * Metodo para mostrar los Funkos en la coleccion.
+   */
   showFunkos() {
     this.funkos.forEach((funko) => {
       const marketValue = funko.getMarketValue();
@@ -112,16 +144,18 @@ export class Collection {
     });
   }
 
+  /**
+   * Metodo para guardar la coleccion en ficheros JSON
+   * @param user - usuario a quien pertenece la coleccion.
+   */
   saveToFile(user: User): void {
     const userDir = path.join(dataDir, user.username);
 
     try {
-      // Create directory if it doesn't exist
       if (!fs.existsSync(userDir)) {
         fs.mkdirSync(userDir, { recursive: true });
       }
 
-      // Save each Funko
       this.funkos.forEach((funko) => {
         const filePath = path.join(userDir, `${funko.id}.json`);
         fs.writeFileSync(filePath, JSON.stringify(funko.toJSON(), null, 2));
@@ -133,17 +167,19 @@ export class Collection {
     }
   }
 
+  /**
+   * Metodo para cargar la coleccion con los Funkos en los ficheros JSON
+   * @param user - usuario a quien cargar los Funkos.
+   */
   loadFromFile(user: User): void {
     const userDir = path.join(dataDir, user.username);
     
-    // Create directory if it doesn't exist
     if (!fs.existsSync(userDir)) {
         fs.mkdirSync(userDir, { recursive: true });
-        this.funkos = []; // Initialize empty collection
+        this.funkos = [];
         return;
     }
 
-    // Only try to read files if directory exists
     this.funkos = [];
     const funkoFiles = fs.readdirSync(userDir)
         .filter(file => file.endsWith('.json'));

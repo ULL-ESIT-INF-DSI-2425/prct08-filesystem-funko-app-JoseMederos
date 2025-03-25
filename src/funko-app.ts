@@ -6,7 +6,6 @@ import { FunkoModel, FunkoType, FunkoGenre } from "./funko.js";
 import { Collection } from "./collection.js";
 import { User } from "./user.js";
 
-// Initialize yargs
 yargs(hideBin(process.argv))
   .command({
     command: 'add',
