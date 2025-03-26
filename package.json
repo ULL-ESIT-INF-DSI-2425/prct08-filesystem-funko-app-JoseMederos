@@ -4,7 +4,7 @@
   "main": "funko-app.js",
   "type": "module",
   "scripts": {
-    "dev": "tsc-watch --onSuccess \"node dist/basicFunctions.js\"",
+    "dev": "tsc-watch --onSuccess \"node dist/funko-app.js\"",
     "doc": "typedoc",
     "test": "vitest run",
     "coverage": "vitest run --coverage --coverage.include '**/src/*'"
