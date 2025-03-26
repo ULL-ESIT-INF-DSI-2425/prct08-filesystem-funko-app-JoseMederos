@@ -57,5 +57,6 @@ const testMove4 : string = join('../DSI-template/src/.', testMoveFile);
 
 ReadDirectory(testPath);
 SafeRemoveFile(testRemove, testTrash);
-MoveFile(testMove1, testMove2);
+//MoveFile(testMove1, testMove2);
+MoveFile(testMove3, testMove4);
 
